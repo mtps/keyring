@@ -21,6 +21,7 @@ const (
 	WinCredBackend       BackendType = "wincred"
 	FileBackend          BackendType = "file"
 	PassBackend          BackendType = "pass"
+	VaultBackend         BackendType = "vault"
 )
 
 // This order makes sure the OS-specific backends
@@ -36,6 +37,7 @@ var backendOrder = []BackendType{
 	// General
 	PassBackend,
 	FileBackend,
+	VaultBackend,
 }
 
 var supportedBackends = map[BackendType]opener{}

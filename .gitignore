@@ -1,1 +1,4 @@
 .vagrant
+.idea
+keyring
+keyring.iml
