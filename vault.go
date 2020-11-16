@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/vault/api"
-	"os"
 	path2 "path"
 	"strings"
 )
@@ -14,8 +13,6 @@ type vaultKeyring struct {
 	vault *api.Client
 
 	prefix string
-	address string
-	token string
 }
 
 type vaultData struct {
@@ -38,33 +35,24 @@ func init() {
 			cfg.VaultPrefix = "secret/keyring"
 		}
 
-		if cfg.VaultAddress == "" {
-			cfg.VaultAddress = "localhost:8200"
-		}
-
-		if cfg.VaultToken == "" {
-			cfg.VaultToken = os.Getenv("VAULT_TOKEN")
-		}
-
+		// Will read vault token and vault addr env vars.
 		vaultConfig := api.DefaultConfig()
-		vaultConfig.Address = cfg.VaultAddress
+		if cfg.VaultAddress != "" {
+			vaultConfig.Address = cfg.VaultAddress
+		}
 
 		client, err := api.NewClient(vaultConfig)
 		if err != nil {
 			return &vaultKeyring{}, err
 		}
 
-		if err := client.SetAddress(cfg.VaultAddress); err != nil {
-			return &vaultKeyring{}, err
+		if cfg.VaultToken != "" {
+			client.SetToken(cfg.VaultToken)
 		}
-
-		client.SetToken(cfg.VaultToken)
 
 		ring := &vaultKeyring{
 			vault: client,
 			prefix: cfg.VaultPrefix,
-			address: cfg.VaultAddress,
-			token: cfg.VaultToken,
 		}
 
 		return ring, nil
