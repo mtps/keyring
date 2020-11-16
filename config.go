@@ -47,6 +47,15 @@ type Config struct {
 	// PassPrefix is a string prefix to prepend to the item path stored in pass
 	PassPrefix string
 
+	// VaultAddress is a string address:port of the vault instance
+	VaultAddress string
+
+	// VaultKey is a string key to access the vault instance
+	VaultToken string
+
+	// VaultPrefix is a string prefix to prepend to the item path stored in pass
+	VaultPrefix string
+
 	// WinCredPrefix is a string prefix to prepend to the key name
 	WinCredPrefix string
 }
